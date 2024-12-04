@@ -1,5 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <!-- Primary Color -->
+    <color name="colorPrimary">#4A90E2</color>
+    <color name="colorPrimaryDark">#357ABD</color>
+    <color name="colorAccent">#2C6B3F</color>
+
+    <!-- Background Colors -->
+    <color name="backgroundLight">#F4F4F4</color>
+    <color name="backgroundDark">#1F1F1F</color>
+
+    <!-- Text Colors -->
+    <color name="textPrimary">#333333</color>
+    <color name="textSecondary">#7F7F7F</color>
+    <color name="textLink">#4A90E2</color>
+    
+    <!-- Button Colors -->
+    <color name="buttonPrimary">#4A90E2</color>
+    <color name="buttonSecondary">#2C6B3F</color>
+    <color name="buttonText">#FFFFFF</color>
+
+    <!-- Card & Container -->
+    <color name="cardBackground">#FFFFFF</color>
+    <color name="containerSelectedBackground">#D4E3F4</color>
+
+    <!-- Error & Success -->
+    <color name="errorColor">#D32F2F</color>
+    <color name="successColor">#388E3C</color>
+
+    <!-- Divider & Border -->
+    <color name="dividerColor">#E0E0E0</color>
+    <color name="borderColor">#B0B0B0</color>
+
+    <!-- Shadow -->
+    <color name="shadowColor">#000000</color>
 </resources>
