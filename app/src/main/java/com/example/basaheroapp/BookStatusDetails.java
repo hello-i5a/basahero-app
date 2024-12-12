@@ -47,6 +47,8 @@ public class BookStatusDetails extends AppCompatActivity {
     private TextView booktitle, bookauthor, bookgenre, bookdate, bookdesc;
     private RatingBar bookrating;
     private String accID, bookID, imgFilename;
+    private String status;
+    private float rateValue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +67,7 @@ public class BookStatusDetails extends AppCompatActivity {
 
         accID = getIntent().getStringExtra("accid");
         bookID = getIntent().getStringExtra("bookid");
+        status = getIntent().getStringExtra("status");
         getData(bookID);
 
         AppBarLayout appbar = findViewById(R.id.appbar);
@@ -116,7 +119,41 @@ public class BookStatusDetails extends AppCompatActivity {
             public void onClick(View view) {
                 Python py = Python.getInstance();
                 py.getModule("storage").callAttr("moveStatus", accID, bookID);
-                finish();
+
+                if (status.equals("2")) {
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(new ContextThemeWrapper(BookStatusDetails.this, R.style.myDialog));
+                    View mView = getLayoutInflater().inflate(R.layout.rating_popup, null);
+
+                    final RatingBar ratebar = mView.findViewById(R.id.ratingBar);
+                    ratebar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+                        @Override
+                        public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                            rateValue = rating;
+                        }
+                    });
+
+                    dialog.setTitle("Rate this Book");
+                    dialog.setPositiveButton("Rate", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            Python py = Python.getInstance();
+                            py.getModule("storage").callAttr("rateBook", accID, bookID, rateValue);
+                            finish();
+                        }
+                    });
+                    dialog.setNegativeButton("Later", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            finish();
+                        }
+                    });
+
+                    dialog.setView(mView);
+                    AlertDialog diag = dialog.create();
+                    diag.show();
+                } else {
+                    finish();
+                }
             }
         });
 
@@ -124,20 +161,14 @@ public class BookStatusDetails extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 AlertDialog.Builder dialog = new AlertDialog.Builder(new ContextThemeWrapper(BookStatusDetails.this, R.style.myDialog));
-                dialog.setTitle("Delete this Book");
-                dialog.setMessage("Are you sure you want to delete this?");
+                dialog.setTitle("Remove this Book");
+                dialog.setMessage("Are you sure you want to remove this to your list?");
                 dialog.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         Python py = Python.getInstance();
-                        py.getModule("storage").callAttr("deleteBook",bookID, imgFilename);
-                        Toast.makeText(getApplicationContext(), "Book Deleted", Toast.LENGTH_SHORT).show();
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                finish();
-                            }
-                        }, 1000);
+                        py.getModule("storage").callAttr("removeReadList", accID, bookID);
+                        finish();
                     }
                 });
                 dialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

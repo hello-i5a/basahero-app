@@ -26,7 +26,6 @@ import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    AccountDetails accountDetails;
     GetBooks getBooks;
     Context context;
     private DrawerLayout drawerLayout;
@@ -43,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         String email = getIntent().getExtras().getString("email");
         String accKey = (username.isEmpty()) ? email : username;
 
-        accountDetails = new AccountDetails(accKey);
+        AccountDetails.getInstance(accKey);
         getBooks = new GetBooks();
         context = getApplicationContext();
 
@@ -78,6 +77,30 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (item.getItemId() == R.id.nav_postings) {
             getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, new UserBookPosting()).commit();
             toolbar.setTitle("My Posted Books");
+        } else if (item.getItemId() == R.id.nav_profile) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, new Profile()).commit();
+            toolbar.setTitle("My Profile");
+        } else if (item.getItemId() == R.id.logout) {
+            AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+            dialog.setTitle("Log Out");
+            dialog.setMessage("Are you sure you want to Log out?");
+            dialog.setPositiveButton("Log Out", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    SharedPreferences sp = getSharedPreferences("saved_ACCID", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sp.edit();
+                    editor.clear();
+                    editor.apply();
+                    AccountDetails.getInstance("").destroy();
+                    startActivity(new Intent(getApplicationContext(), LoginRegister.class));
+                    finish();
+                }
+            });
+            dialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                }
+            }).show();
         }
 
         drawerLayout.closeDrawer(GravityCompat.START);
@@ -99,6 +122,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     SharedPreferences.Editor editor = sp.edit();
                     editor.clear();
                     editor.apply();
+                    AccountDetails.getInstance("").destroy();
                     startActivity(new Intent(getApplicationContext(), LoginRegister.class));
                     finish();
                 }
@@ -122,7 +146,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.post_book) {
             Intent intent = new Intent(getApplicationContext(), PostBook.class);
-            intent.putExtra("accID", accountDetails.getId());
+            intent.putExtra("accID", AccountDetails.getInstance("").getId());
             startActivity(intent);
 
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();

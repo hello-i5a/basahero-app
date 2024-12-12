@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:checkableBehavior="single" android:id="@+id/grp1">
+    <group
+        android:id="@+id/grp1"
+        android:checkableBehavior="single">
 
         <item
             android:id="@+id/nav_home"
@@ -13,13 +15,29 @@
 
 
     </group>
-    <group android:checkableBehavior="single" android:id="@+id/grp2">
+    <group
+        android:id="@+id/grp2"
+        android:checkableBehavior="single">
 
-    <item
-        android:id="@+id/nav_postings"
-        android:title="My Posted Books" />
+        <item
+            android:id="@+id/nav_postings"
+            android:title="My Posted Books" />
 
+    </group>
 
-</group>
+    <group
+        android:id="@+id/grp3"
+        android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_profile"
+            android:title="Profile" />
+
+        <item
+            android:id="@+id/logout"
+            android:title="Sign out" />
+
+    </group>
+
 
 </menu>

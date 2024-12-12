@@ -131,13 +131,7 @@ public class PostingDetail extends AppCompatActivity {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         Python py = Python.getInstance();
                         py.getModule("storage").callAttr("deleteBook",bookID, imgFilename);
-                        Toast.makeText(getApplicationContext(), "Book Deleted", Toast.LENGTH_SHORT).show();
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                finish();
-                            }
-                        }, 1000);
+                        finish();
                     }
                 });
                 dialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

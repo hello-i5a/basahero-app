@@ -17,16 +17,28 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/app_icon"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/app_icon_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.BasaheroApp"
         tools:targetApi="31">
         <activity
-            android:name=".BookStatusDetails"
+            android:name=".SearchResult"
             android:exported="false"
             android:screenOrientation="portrait"/>
+        <activity
+            android:name=".EditProfile"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".RatingDetail"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".BookStatusDetails"
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".EditBook"
             android:exported="false"

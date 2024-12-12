@@ -2,28 +2,30 @@ package com.example.basaheroapp;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.fragment.app.Fragment;
+import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 import com.chaquo.python.PyObject;
 import com.chaquo.python.Python;
 import com.example.basaheroapp.Utilities.AccountDetails;
 import com.example.basaheroapp.Utilities.ListAdapter;
-import com.example.basaheroapp.Utilities.PostedListAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class UserBookPosting extends Fragment {
+public class SearchResult extends AppCompatActivity {
 
     ArrayList<String> imgUrl = new ArrayList<>();
     ArrayList<String> titles = new ArrayList<>();
@@ -33,44 +35,48 @@ public class UserBookPosting extends Fragment {
     ArrayList<Float> ratings = new ArrayList<>();
     ArrayList<Integer> ids = new ArrayList<>();
     ListView list;
-    PostedListAdapter listAdapter;
+    ListAdapter listAdapter;
+    String keyword;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_user_book_posting, container, false);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
+        setContentView(R.layout.activity_search_result);
+
+        keyword = getIntent().getStringExtra("keyword");
+        TextView textView = findViewById(R.id.res);
+        textView.setText(keyword);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setTitle("Search");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         getData();
-
-        list = view.findViewById(R.id.posted_list);
-        listAdapter = new PostedListAdapter(getActivity(), imgUrl, titles, authors, genre, dates, ratings, ids);
+        list = findViewById(R.id.newList);
+        listAdapter = new ListAdapter(getApplicationContext(), imgUrl, titles, authors, genre, dates, ratings, ids);
         list.setAdapter(listAdapter);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 TextView id = view.findViewById(R.id.book_id);
-                Intent intent = new Intent(getActivity(), PostingDetail.class);
+                Intent intent = new Intent(getApplicationContext(), BookDetail.class);
                 intent.putExtra("bookid", id.getText());
+                intent.putExtra("accid", AccountDetails.getInstance("").getId());
                 startActivity(intent);
 
             }
         });
-        return view;
+
     }
 
     public void getData() {
-        ids.clear();
-        imgUrl.clear();
-        titles.clear();
-        authors.clear();
-        genre.clear();
-        dates.clear();
 
         Python py = Python.getInstance();
-        PyObject pyObject = py.getModule("storage").callAttr("getPostedBooksList", AccountDetails.getInstance("").getId());
-
+        PyObject pyObject = py.getModule("storage").callAttr("searchBook", keyword);
         String input = pyObject.toString();
+
         int startIndex = input.indexOf("[");
         int endIndex = input.indexOf("]") + 1;
 
@@ -107,10 +113,13 @@ public class UserBookPosting extends Fragment {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        getData();
-        listAdapter = new PostedListAdapter(getActivity(), imgUrl, titles, authors, genre, dates, ratings, ids);
-        list.setAdapter(listAdapter);
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle the "Up" button click
+        if (item.getItemId() == android.R.id.home) {
+            // Finish the activity when the "Up" button is pressed
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

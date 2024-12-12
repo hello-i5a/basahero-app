@@ -186,9 +186,7 @@ public class PostBook extends AppCompatActivity {
 
             Python py = Python.getInstance();
             py.getModule("storage").callAttr("uploadImg", byteArray, postfile_name, posttitle, postauthor, postgenre, postdate, postdesc, accID);
-            Toast.makeText(getApplicationContext(), "Book Posted Successfully!", Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
-            Toast.makeText(getApplicationContext(), "Something Went Wrong", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
     }

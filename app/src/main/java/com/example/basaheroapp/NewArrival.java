@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.chaquo.python.PyObject;
 import com.chaquo.python.Python;
+import com.example.basaheroapp.Utilities.AccountDetails;
 import com.example.basaheroapp.Utilities.GetBooks;
 import com.example.basaheroapp.Utilities.ListAdapter;
 import com.example.basaheroapp.Utilities.PostedListAdapter;
@@ -34,6 +35,7 @@ public class NewArrival extends Fragment {
     ArrayList<Float> ratings = new ArrayList<>();
     ArrayList<Integer> ids = new ArrayList<>();
     ListView list;
+    ListAdapter listAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -42,9 +44,9 @@ public class NewArrival extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_new_arrival, container, false);
 
-        getData();
+        getData(false);
         list = view.findViewById(R.id.newList);
-        ListAdapter listAdapter = new ListAdapter(getActivity(), imgUrl, titles, authors, genre, dates, ratings, ids);
+        listAdapter = new ListAdapter(getActivity(), imgUrl, titles, authors, genre, dates, ratings, ids);
         list.setAdapter(listAdapter);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -52,7 +54,7 @@ public class NewArrival extends Fragment {
                 TextView id = view.findViewById(R.id.book_id);
                 Intent intent = new Intent(getActivity(), BookDetail.class);
                 intent.putExtra("bookid", id.getText());
-                intent.putExtra("accid", ((MainActivity)getActivity()).accountDetails.getId());
+                intent.putExtra("accid", AccountDetails.getInstance("").getId());
                 startActivity(intent);
 
             }
@@ -61,15 +63,21 @@ public class NewArrival extends Fragment {
         return view;
     }
 
-    public void getData() {
+    public void getData(boolean check) {
         ids.clear();
         imgUrl.clear();
         titles.clear();
         authors.clear();
         genre.clear();
         dates.clear();
+        ratings.clear();
 
-        String input = ((MainActivity)getActivity()).getBooks.getNewBooks();
+        String input = ((MainActivity) getActivity()).getBooks.getNewBooks();
+        if (check) {
+            Python py = Python.getInstance();
+            PyObject pyObject = py.getModule("storage").callAttr("getNewArrival");
+            input = pyObject.toString();
+        }
         int startIndex = input.indexOf("[");
         int endIndex = input.indexOf("]") + 1;
 
@@ -103,6 +111,14 @@ public class NewArrival extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getData(true);
+        listAdapter = new ListAdapter(getActivity(), imgUrl, titles, authors, genre, dates, ratings, ids);
+        list.setAdapter(listAdapter);
     }
 
 }

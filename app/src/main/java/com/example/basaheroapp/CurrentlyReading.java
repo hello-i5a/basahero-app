@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 
 import com.chaquo.python.PyObject;
 import com.chaquo.python.Python;
+import com.example.basaheroapp.Utilities.AccountDetails;
 import com.example.basaheroapp.Utilities.ListAdapter;
 
 import org.json.JSONArray;
@@ -50,8 +51,9 @@ public class CurrentlyReading extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 TextView id = view.findViewById(R.id.book_id);
                 Intent intent = new Intent(getActivity(), BookStatusDetails.class);
-                intent.putExtra("accid", ((MainActivity) getActivity()).accountDetails.getId());
+                intent.putExtra("accid", AccountDetails.getInstance("").getId());
                 intent.putExtra("bookid", id.getText());
+                intent.putExtra("status", "2");
                 startActivity(intent);
 
             }
@@ -66,16 +68,16 @@ public class CurrentlyReading extends Fragment {
         authors.clear();
         genre.clear();
         dates.clear();
+        ratings.clear();
 
         Python py = Python.getInstance();
-        PyObject pyObject = py.getModule("storage").callAttr("getReadingList", ((MainActivity) getActivity()).accountDetails.getId());
+        PyObject pyObject = py.getModule("storage").callAttr("getReadingList", AccountDetails.getInstance("").getId());
 
         String input = pyObject.toString();
         int startIndex = input.indexOf("[");
         int endIndex = input.indexOf("]") + 1;
 
         String booksData = input.substring(startIndex, endIndex);
-        System.out.println(booksData);
 
         try {
             // Convert the input to a JSONArray

@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.chaquo.python.PyObject;
 import com.chaquo.python.Python;
+import com.example.basaheroapp.Utilities.AccountDetails;
 import com.example.basaheroapp.Utilities.ListAdapter;
 
 import org.json.JSONArray;
@@ -50,8 +51,8 @@ public class ReadComplete extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 TextView id = view.findViewById(R.id.book_id);
-                Intent intent = new Intent(getActivity(), PostingDetail.class);
-                intent.putExtra("accid", ((MainActivity) getActivity()).accountDetails.getId());
+                Intent intent = new Intent(getActivity(), RatingDetail.class);
+                intent.putExtra("accid", AccountDetails.getInstance("").getId());
                 intent.putExtra("bookid", id.getText());
                 startActivity(intent);
 
@@ -67,16 +68,16 @@ public class ReadComplete extends Fragment {
         authors.clear();
         genre.clear();
         dates.clear();
+        ratings.clear();
 
         Python py = Python.getInstance();
-        PyObject pyObject = py.getModule("storage").callAttr("getCompletedList", ((MainActivity) getActivity()).accountDetails.getId());
+        PyObject pyObject = py.getModule("storage").callAttr("getCompletedList", AccountDetails.getInstance("").getId());
 
         String input = pyObject.toString();
         int startIndex = input.indexOf("[");
         int endIndex = input.indexOf("]") + 1;
 
         String booksData = input.substring(startIndex, endIndex);
-        System.out.println(booksData);
 
         try {
             // Convert the input to a JSONArray
@@ -113,5 +114,13 @@ public class ReadComplete extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getData();
+        listAdapter = new ListAdapter(getActivity(), imgUrl, titles, authors, genre, dates, ratings, ids);
+        list.setAdapter(listAdapter);
     }
 }

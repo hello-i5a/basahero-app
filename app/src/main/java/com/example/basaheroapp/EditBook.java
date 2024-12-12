@@ -66,7 +66,6 @@ public class EditBook extends AppCompatActivity {
                     Python py = Python.getInstance();
                     py.getModule("storage").callAttr("updatePostedBook", bookID, editTextTitle.getText().toString().trim(), editTextAuthor.getText().toString().trim(),
                             editTextGenre.getText().toString().trim(), editTextDate.getText().toString().trim(), descriptionEditText.getText().toString().trim());
-                    Toast.makeText(getApplicationContext(), "Book Edited Successfully!", Toast.LENGTH_SHORT).show();
                     finish();
                 }
             }
@@ -97,7 +96,6 @@ public class EditBook extends AppCompatActivity {
             descriptionEditText.setText(book.getString("description"));
 
         } catch (Exception e) {
-            Toast.makeText(getApplicationContext(), "Fucking idiot", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
     }

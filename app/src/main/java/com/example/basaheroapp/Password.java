@@ -38,6 +38,7 @@ public class Password extends AppCompatActivity {
         regConPassLayout = findViewById(R.id.regconpass_layout);
         regPassEditText = findViewById(R.id.regpass);
         regConPassEditText = findViewById(R.id.regconpass);
+        loadingProgressBar = findViewById(R.id.loading_progress);
 
         signUpButton = findViewById(R.id.signup);
 
@@ -81,11 +82,11 @@ public class Password extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Account Creation Successful", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class); // Replace with actual activity
                 intent.putExtra("username", user);
-                startActivity(intent);
 
                 signUpButton.setVisibility(View.VISIBLE);
                 loadingProgressBar.setVisibility(View.GONE);
 
+                startActivity(intent);
                 finish();
             }
         });

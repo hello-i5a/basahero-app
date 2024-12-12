@@ -50,12 +50,8 @@ def getNewArrival():
     return data
 
 def addReadList(accID, bookID):
-    postBook = (
-        supabase.table("read_list")
-        .insert({"user_id": accID, "book_id": bookID})
-        .execute()
-    )
-    return "ok"
+    data = supabase.rpc('insertbook', {"accid": accID, "bookid": bookID}).execute()
+    return data
 
 def getWantReadList(accID):
     response = supabase.table("read_list").select("books(*)").eq("user_id", accID).eq("status", 0).execute()
@@ -71,4 +67,20 @@ def getCompletedList(accID):
 
 def moveStatus(accID, bookID):
     data = supabase.rpc('move_status', {"accid": accID, "bookid": bookID}).execute()
+    return data
+
+def removeReadList(accID, bookID):
+    data = supabase.rpc('remove_readlist', {"accid": accID, "bookid": bookID}).execute()
+    return data
+
+def rateBook(accID, bookID, rate):
+    data = supabase.rpc('ratebook', {"accid": accID, "bookid": bookID, "rate": rate}).execute()
+    return data
+
+def updateProfile(accID, user, email, name):
+    data = supabase.rpc('editprofile', {"accid": accID, "useredit": user, "emailedit": email, "nameedit": name}).execute()
+    return data
+
+def searchBook(keyword):
+    data = supabase.rpc('seach_book', {"skeyword": keyword}).execute()
     return data

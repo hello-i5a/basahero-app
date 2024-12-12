@@ -1,5 +1,6 @@
 package com.example.basaheroapp;
 
+import android.content.DialogInterface;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -12,7 +13,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
@@ -33,19 +36,20 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class BookDetail extends AppCompatActivity {
+public class RatingDetail extends AppCompatActivity {
 
     private ImageView imageView, delete;
     private TextView booktitle, bookauthor, bookgenre, bookdate, bookdesc;
     private RatingBar bookrating;
     private String accID, bookID, imgFilename;
+    private float rateValue;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_book_detail);
+        setContentView(R.layout.activity_rating_detail);
 
         booktitle = findViewById(R.id.title);
         bookauthor = findViewById(R.id.author);
@@ -54,9 +58,10 @@ public class BookDetail extends AppCompatActivity {
         bookdesc = findViewById(R.id.desc);
         bookrating = findViewById(R.id.rating);
         imageView = findViewById(R.id.detail_img);
+        delete = findViewById(R.id.delete);
 
-        bookID = getIntent().getStringExtra("bookid");
         accID = getIntent().getStringExtra("accid");
+        bookID = getIntent().getStringExtra("bookid");
         getData(bookID);
 
         AppBarLayout appbar = findViewById(R.id.appbar);
@@ -79,7 +84,7 @@ public class BookDetail extends AppCompatActivity {
 
                 if (Math.abs(verticalOffset) - appBarLayout.getTotalScrollRange() == 0) {
                     //  Collapsed
-                    collapsingToolbarLayout.setTitle("A Million To One");
+                    collapsingToolbarLayout.setTitle(booktitle.getText());
                 } else {
                     //Expanded
                     collapsingToolbarLayout.setTitle(" ");
@@ -97,34 +102,68 @@ public class BookDetail extends AppCompatActivity {
         SnapHelper snapHelper = new PagerSnapHelper();
         snapHelper.attachToRecyclerView(rv);
 
-        Button signInButton = findViewById(R.id.add_read);
-        ColorStateList tintColor = ColorStateList.valueOf(Color.parseColor("#4A90E2")); // Blue color
-        signInButton.setBackgroundTintList(tintColor);
-        signInButton.setOnClickListener(new View.OnClickListener() {
+        Button rate = findViewById(R.id.rate);
+        ColorStateList tintColor = ColorStateList.valueOf(Color.parseColor("#4BB543"));
+        rate.setBackgroundTintList(tintColor);
+        rate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Python py = Python.getInstance();
-                PyObject obj = py.getModule("storage").callAttr("addReadList", accID, bookID);
-                String input = obj.toString();
+                AlertDialog.Builder dialog = new AlertDialog.Builder(new ContextThemeWrapper(RatingDetail.this, R.style.myDialog));
+                View mView = getLayoutInflater().inflate(R.layout.rating_popup, null);
 
-                int startIndex = input.indexOf("data=") + 5; // 5 is the length of "data="
-                int endIndex = input.indexOf(" ", startIndex);
+                final RatingBar ratebar = (RatingBar) mView.findViewById(R.id.ratingBar);
+                ratebar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+                    @Override
+                    public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                        rateValue = rating;
+                    }
+                });
 
-                // If no space is found, take the substring until the end of the string
-                if (endIndex == -1) {
-                    endIndex = input.length();
-                }
+                dialog.setTitle("Rate this Book");
+                dialog.setPositiveButton("Rate", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Python py = Python.getInstance();
+                        py.getModule("storage").callAttr("rateBook", accID, bookID, rateValue);
+                        Toast.makeText(getApplicationContext(), "Thank you for your feedback!", Toast.LENGTH_SHORT).show();
+                        getData(bookID);
 
-                // Extract the value of data
-                String dataValue = input.substring(startIndex, endIndex);
+                    }
+                });
+                dialog.setNegativeButton("Later", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                    }
+                });
 
-                if (dataValue.equals("True")) {
-                    Toast.makeText(getApplicationContext(), "Added to Read List", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getApplicationContext(), "Already on your Read List", Toast.LENGTH_SHORT).show();
-                }
+                dialog.setView(mView);
+                AlertDialog diag = dialog.create();
+                diag.show();
             }
         });
+
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder dialog = new AlertDialog.Builder(new ContextThemeWrapper(RatingDetail.this, R.style.myDialog));
+                dialog.setTitle("Remove this Book");
+                dialog.setMessage("Are you sure you want to remove this to your list?");
+                dialog.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Python py = Python.getInstance();
+                        py.getModule("storage").callAttr("removeReadList", accID, bookID);
+                        finish();
+                    }
+                });
+                dialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                    }
+                }).show();
+            }
+        });
+
 
     }
 
@@ -208,4 +247,9 @@ public class BookDetail extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getData(bookID);
+    }
 }
