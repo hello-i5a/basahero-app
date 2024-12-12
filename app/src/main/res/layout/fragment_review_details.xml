@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".UploadProcess.ReviewDetails">
+
+    <!-- TODO: Update blank fragment layout -->
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="128dp"
+        android:elevation="10dp"
+        android:translationZ="4dp"
+        app:cardCornerRadius="12dp">
+
+        <LinearLayout
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:gravity="center_horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Review Details"
+                android:textColor="@color/backgroundDark"
+                android:textStyle="bold"
+                android:textSize="32dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Is everything to your likings?"
+                android:textSize="16dp"
+                android:layout_marginBottom="32dp"/>
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:stretchColumns="*"
+                android:layout_marginBottom="16dp">
+
+                <TableRow
+                    android:layout_width="0dp"
+                    android:layout_marginBottom="16dp"
+                    android:layout_weight="1">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:text="Filename:"
+                    android:textSize="12dp"
+                    android:textColor="@color/backgroundDark"
+                    />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:id="@+id/review_filename"
+                    android:text=""
+                    android:textSize="12dp"
+                    android:layout_weight="1"/>
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="0dp"
+                    android:layout_marginBottom="16dp"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:text="Title:"
+                        android:textSize="12dp"
+                        android:textColor="@color/backgroundDark"
+                        />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:id="@+id/review_title"
+                        android:text=""
+                        android:textSize="12dp"
+                        android:layout_weight="1"/>
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="0dp"
+                    android:layout_marginBottom="16dp"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:text="Author:"
+                        android:textSize="12dp"
+                        android:textColor="@color/backgroundDark"
+                        />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:id="@+id/review_author"
+                        android:text=""
+                        android:textSize="12dp"
+                        android:layout_weight="1"/>
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="0dp"
+                    android:layout_marginBottom="16dp"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:text="Genre:"
+                        android:textSize="12dp"
+                        android:textColor="@color/backgroundDark"
+                        />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:id="@+id/review_genre"
+                        android:text=""
+                        android:textSize="12dp"
+                        android:layout_weight="1"/>
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="0dp"
+                    android:layout_marginBottom="16dp"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:text="Publication Date:"
+                        android:textSize="12dp"
+                        android:textColor="@color/backgroundDark"
+                        />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:id="@+id/review_date"
+                        android:text=""
+                        android:textSize="12dp"
+                        android:layout_weight="1"/>
+
+                </TableRow>
+            </TableLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:text="Descrption:"
+                android:textSize="12dp"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/review_desc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textMultiLine"
+                    android:lines="12"
+                    android:gravity="top"
+                    android:overScrollMode="always"
+                    android:scrollbars="vertical"
+                    android:scrollbarStyle="insideInset"
+                    android:scrollHorizontally="false"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</FrameLayout>

@@ -33,4 +33,7 @@
 
     <!-- Shadow -->
     <color name="shadowColor">#000000</color>
+
+    <!-- Transparent -->
+    <color name="transparent">#00000000</color>
 </resources>
