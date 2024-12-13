@@ -1,6 +1,6 @@
 # Basahero App
 
-**Basahero** is an Android app designed for book lovers. It allows users to browse, add to reading lists, and review books. With features like user registration, personalized reading lists, and book data powered by the Penguin Random House API, Basahero makes it easy to manage your reading journey.
+**Basahero** is an Android app designed for book lovers. It allows users to browse, add to reading lists, and review books. With features like user registration, personalized reading lists, and book data, Basahero makes it easy to manage your reading journey.
 
 ## Features
 
