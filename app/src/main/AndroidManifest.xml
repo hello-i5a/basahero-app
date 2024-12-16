@@ -24,9 +24,13 @@
         android:theme="@style/Theme.BasaheroApp"
         tools:targetApi="31">
         <activity
+            android:name=".Comments"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".SearchResult"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".EditProfile"
             android:exported="false"

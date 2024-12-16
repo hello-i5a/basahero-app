@@ -174,15 +174,15 @@ public class Home extends Fragment {
         return items;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
-    }
-    @Override
-    public void onStop() {
-        super.onStop();
-        ((AppCompatActivity)getActivity()).getSupportActionBar().show();
-    }
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
+//    }
+//    @Override
+//    public void onStop() {
+//        super.onStop();
+//        ((AppCompatActivity)getActivity()).getSupportActionBar().show();
+//    }
 
 }

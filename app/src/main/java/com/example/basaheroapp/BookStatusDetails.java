@@ -47,7 +47,7 @@ public class BookStatusDetails extends AppCompatActivity {
     private TextView booktitle, bookauthor, bookgenre, bookdate, bookdesc;
     private RatingBar bookrating;
     private String accID, bookID, imgFilename;
-    private String status;
+    private String status, title;
     private float rateValue;
 
     @Override
@@ -179,6 +179,18 @@ public class BookStatusDetails extends AppCompatActivity {
             }
         });
 
+        Button comments = findViewById(R.id.viewcomments);
+        comments.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), Comments.class);
+                intent.putExtra("accid", accID);
+                intent.putExtra("bookid", bookID);
+                intent.putExtra("title", title);
+                startActivity(intent);
+            }
+        });
+
     }
 
     private ArrayList<Item> testItem() {
@@ -242,6 +254,7 @@ public class BookStatusDetails extends AppCompatActivity {
                     .placeholder(R.color.borderColor)
                     .into(imageView);
 
+            title = book.getString("title");
             booktitle.setText(book.getString("title"));
             bookauthor.setText(book.getString("author"));
             bookgenre.setText(book.getString("genre"));

@@ -1,6 +1,7 @@
 package com.example.basaheroapp;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -41,7 +42,7 @@ public class RatingDetail extends AppCompatActivity {
     private ImageView imageView, delete;
     private TextView booktitle, bookauthor, bookgenre, bookdate, bookdesc;
     private RatingBar bookrating;
-    private String accID, bookID, imgFilename;
+    private String accID, bookID, imgFilename, title;
     private float rateValue;
 
 
@@ -164,7 +165,17 @@ public class RatingDetail extends AppCompatActivity {
             }
         });
 
-
+        Button comments = findViewById(R.id.viewcomments);
+        comments.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), Comments.class);
+                intent.putExtra("accid", accID);
+                intent.putExtra("bookid", bookID);
+                intent.putExtra("title", title);
+                startActivity(intent);
+            }
+        });
     }
 
     private ArrayList<Item> testItem() {
@@ -228,6 +239,7 @@ public class RatingDetail extends AppCompatActivity {
                     .placeholder(R.color.borderColor)
                     .into(imageView);
 
+            title = book.getString("title");
             booktitle.setText(book.getString("title"));
             bookauthor.setText(book.getString("author"));
             bookgenre.setText(book.getString("genre"));

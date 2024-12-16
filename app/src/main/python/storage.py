@@ -84,3 +84,19 @@ def updateProfile(accID, user, email, name):
 def searchBook(keyword):
     data = supabase.rpc('seach_book', {"skeyword": keyword}).execute()
     return data
+
+def getComments(accID, bookID):
+    data = supabase.rpc('get_comments', {"accid": "1", "bookid": "5"}).execute()
+    return data
+
+def getComments(bookID):
+    data = supabase.rpc('get_comments', {"bookid": bookID}).execute()
+    return data
+
+def insertComments(accID, bookID, content, created):
+    response = (
+        supabase.table("comments")
+        .insert({"user_id": accID, "book_id": bookID, "content": content, "created": created})
+        .execute()
+    )
+    return response

@@ -1,5 +1,6 @@
 package com.example.basaheroapp;
 
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -38,7 +39,7 @@ public class BookDetail extends AppCompatActivity {
     private ImageView imageView, delete;
     private TextView booktitle, bookauthor, bookgenre, bookdate, bookdesc;
     private RatingBar bookrating;
-    private String accID, bookID, imgFilename;
+    private String accID, bookID, imgFilename, title;
 
 
     @Override
@@ -79,7 +80,7 @@ public class BookDetail extends AppCompatActivity {
 
                 if (Math.abs(verticalOffset) - appBarLayout.getTotalScrollRange() == 0) {
                     //  Collapsed
-                    collapsingToolbarLayout.setTitle("A Million To One");
+                    collapsingToolbarLayout.setTitle(title);
                 } else {
                     //Expanded
                     collapsingToolbarLayout.setTitle(" ");
@@ -123,6 +124,18 @@ public class BookDetail extends AppCompatActivity {
                 } else {
                     Toast.makeText(getApplicationContext(), "Already on your Read List", Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+
+        Button comments = findViewById(R.id.viewcomments);
+        comments.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), Comments.class);
+                intent.putExtra("accid", accID);
+                intent.putExtra("bookid", bookID);
+                intent.putExtra("title", title);
+                startActivity(intent);
             }
         });
 
@@ -189,6 +202,7 @@ public class BookDetail extends AppCompatActivity {
                     .placeholder(R.color.borderColor)
                     .into(imageView);
 
+            title = book.getString("title");
             booktitle.setText(book.getString("title"));
             bookauthor.setText(book.getString("author"));
             bookgenre.setText(book.getString("genre"));

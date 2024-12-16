@@ -31,6 +31,7 @@ import androidx.recyclerview.widget.SnapHelper;
 import com.bumptech.glide.Glide;
 import com.chaquo.python.PyObject;
 import com.chaquo.python.Python;
+import com.example.basaheroapp.Utilities.AccountDetails;
 import com.example.basaheroapp.Utilities.GetBooks;
 import com.example.basaheroapp.Utilities.Item;
 import com.example.basaheroapp.Utilities.RecyclerViewAdapter;
@@ -47,7 +48,7 @@ public class PostingDetail extends AppCompatActivity {
     private ImageView imageView, delete;
     private TextView booktitle, bookauthor, bookgenre, bookdate, bookdesc;
     private RatingBar bookrating;
-    private String bookID, imgFilename;
+    private String bookID, imgFilename, title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -141,6 +142,18 @@ public class PostingDetail extends AppCompatActivity {
                 }).show();
             }
         });
+
+        Button comments = findViewById(R.id.viewcomments);
+        comments.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), Comments.class);
+                intent.putExtra("accid", AccountDetails.getInstance("").getId());
+                intent.putExtra("bookid", bookID);
+                intent.putExtra("title", title);
+                startActivity(intent);
+            }
+        });
     }
 
     private ArrayList<Item> testItem() {
@@ -204,6 +217,7 @@ public class PostingDetail extends AppCompatActivity {
                     .placeholder(R.color.borderColor)
                     .into(imageView);
 
+            title = book.getString("title");
             booktitle.setText(book.getString("title"));
             bookauthor.setText(book.getString("author"));
             bookgenre.setText(book.getString("genre"));
