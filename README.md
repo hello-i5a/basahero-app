@@ -8,6 +8,7 @@
 - **Browse and Search Books:** View books by category (e.g., New Arrivals, Top Rated, Recommended), and search by title, author, or keyword.
 - **Book Details:** View detailed information for each book, including cover image, synopsis, author info, and ratings.
 - **Reading Lists:** Organize your books into personal lists—Want to Read, Reading, and Completed. Rate and review books you’ve finished.
+- **Comment on Books:** Share your thoughts by commenting on books. Engage in discussions and see comments from other readers.
 - **User Profile Management:** View and edit personal account details, including name, username, email, and password.
 - **Logout:** Securely log out to return to the login screen.
 
